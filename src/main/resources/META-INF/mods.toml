@@ -1,0 +1,26 @@
+# Make sure this is set to "kotlinforforge"
+modLoader="kotlinforforge"
+# Make sure this is set to the appropriate version range
+loaderVersion="[1.2,1.3)" # Versions 1.2.x until 1.3
+
+[[mods]]
+modId="examplemod"
+version="${file.jarVersion}"
+displayName="ExampleMod"
+credits="The ExampleMod dev team"
+authors="ExampleModAuthor"
+description='''
+Example mod that uses Kotlin for Forge.
+'''
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31.2,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"
