@@ -1,7 +1,7 @@
 # Make sure this is set to "kotlinforforge"
 modLoader="kotlinforforge"
 # Make sure this is set to the appropriate version range
-loaderVersion="[1.3,)" # Require at least 1.3.x
+loaderVersion="[1.3,)" # Require at least 1.4.x
 
 [[mods]]
 modId="examplemod"

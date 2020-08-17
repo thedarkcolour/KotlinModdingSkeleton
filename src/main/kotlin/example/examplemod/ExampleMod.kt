@@ -1,9 +1,8 @@
 package example.examplemod
 
-import example.examplemod.block.ExampleBlock
+import example.examplemod.block.ModBlocks
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
@@ -14,13 +13,14 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
-import thedarkcolour.kotlinforforge.forge.objectHolder
 import thedarkcolour.kotlinforforge.forge.runWhenOn
 
 /**
  * Main mod class. Should be an `object` declaration annotated with `@Mod`.
  * The modid should be declared in this object and should match the modId entry
  * in mods.toml.
+ *
+ * An example for blocks is in the `blocks` package of this mod.
  */
 @Mod(ExampleMod.ID)
 object ExampleMod {
@@ -30,16 +30,11 @@ object ExampleMod {
     // the logger for our mod
     val LOGGER: Logger = LogManager.getLogger()
 
-    /**
-     * Example block using an `ObjectHolderDelegate`. The block's `registryName`
-     * must correspond to a `Block` instance registered during the block registry event with the same registry name.
-     *
-     * @see registerBlocks
-     */
-    val EXAMPLE_BLOCK by objectHolder<ExampleBlock>(ResourceLocation(ID, "example_block"))
-
     init {
         LOGGER.log(Level.INFO, "Hello world!")
+
+        // Register the KDeferredRegister to the mod-specific event bus
+        ModBlocks.REGISTRY.register(MOD_BUS)
 
         // usage of the KotlinEventBus
         MOD_BUS.addGenericListener(::registerBlocks)
