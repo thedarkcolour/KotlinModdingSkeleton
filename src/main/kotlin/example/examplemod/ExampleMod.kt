@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
@@ -42,12 +43,13 @@ object ExampleMod {
 
         // usage of the KotlinEventBus
         MOD_BUS.addGenericListener(::registerBlocks)
+        MOD_BUS.addListener(::onClientSetup)
         FORGE_BUS.addListener(::onServerAboutToStart)
     }
 
     /**
      * Register your mod's blocks during the
-     * block registry event, fired on the mod bus.
+     * block registry event, fired on the mod specific event bus.
      */
     private fun registerBlocks(event: RegistryEvent.Register<Block>) {
         // from Forge.kt
@@ -61,7 +63,16 @@ object ExampleMod {
     }
 
     /**
-     * Fired on the Forge bus.
+     * This is used for initializing client specific
+     * things such as renderers and keymaps
+     * Fired on the mod specific event bus.
+     */
+    private fun onClientSetup(event: FMLClientSetupEvent) {
+        LOGGER.log(Level.INFO, "Initializing client...")
+    }
+
+    /**
+     * Fired on the global Forge bus.
      */
     private fun onServerAboutToStart(event: FMLServerAboutToStartEvent) {
         LOGGER.log(Level.INFO, "Server starting...")
