@@ -13,7 +13,7 @@ object ModBlocks {
 
     // the returned ObjectHolderDelegate can be used as a property delegate
     // this is automatically registered by the deferred registry at the correct times
-    val EXAMPLE_BLOCK by REGISTRY.register("example_block") {
-        Block(AbstractBlock.Properties.create(Material.BAMBOO).setLightLevel { 15 }.hardnessAndResistance(3.0f))
+    val EXAMPLE_BLOCK by REGISTRY.registerObject("example_block") {
+        Block(AbstractBlock.Properties.of(Material.BAMBOO).lightLevel() { 15 }.strength(3.0f))
     }
 }

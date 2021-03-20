@@ -5,11 +5,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
         // Make sure this version matches the one included in Kotlin for Forge
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
         // OPTIONAL Gradle plugin for Kotlin Serialization
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.30"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.31"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -23,7 +23,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 minecraft {
     // Change to your preferred mappings
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.16.5'
     // Add your AccessTransformer
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -77,10 +77,10 @@ repositories {
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.16.5-36.0.10'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
     // Use the latest version of KotlinForForge
-    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.9.0'))
+    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.10.0'))
 }
 
 compileKotlin {
