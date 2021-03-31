@@ -7,9 +7,9 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
         // Make sure this version matches the one included in Kotlin for Forge
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
         // OPTIONAL Gradle plugin for Kotlin Serialization
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.31"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.32"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -80,7 +80,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
     // Use the latest version of KotlinForForge
-    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.10.0'))
+    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.11.0'))
 }
 
 compileKotlin {
