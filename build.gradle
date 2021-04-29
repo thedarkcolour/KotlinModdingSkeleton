@@ -80,7 +80,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
     // Use the latest version of KotlinForForge
-    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.11.0'))
+    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.11.1'))
 }
 
 compileKotlin {
