@@ -1,15 +1,15 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
         // Make sure this version matches the one included in Kotlin for Forge
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
         // OPTIONAL Gradle plugin for Kotlin Serialization
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.5.0"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -19,7 +19,7 @@ version = '1.0.0'
 group = 'example.examplemod'
 archivesBaseName = 'examplemod'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
     // Change to your preferred mappings
@@ -68,6 +68,9 @@ minecraft {
     }
 }
 
+// Include assets and data from data generators
+sourceSets.main.resources { srcDirs 'src/generated/resources/' }
+
 repositories {
     maven {
         name = 'Kotlin for Forge'
@@ -77,23 +80,10 @@ repositories {
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.26'
 
     // Use the latest version of KotlinForForge
-    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.12.0'))
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-        languageVersion = '1.5'
-        apiVersion = '1.5'
-    }
-}
-
-// Include assets and data from data generators
-sourceSets.main.resources {
-    srcDirs 'src/generated/resources/'
+    fg.deobf(implementation('thedarkcolour:kotlinforforge:1.12.1'))
 }
 
 jar {
