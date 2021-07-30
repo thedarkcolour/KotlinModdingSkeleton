@@ -19,11 +19,11 @@ version = '1.0.0'
 group = 'example.examplemod'
 archivesBaseName = 'examplemod'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
     // Change to your preferred mappings
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.17.1'
     // Add your AccessTransformer
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -72,18 +72,30 @@ minecraft {
 sourceSets.main.resources { srcDirs 'src/generated/resources/' }
 
 repositories {
+    mavenLocal()
+
     maven {
         name = 'Kotlin for Forge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+
+    flatDir {
+        dir 'libs'
     }
 }
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.32'
+    minecraft 'net.minecraftforge:forge:1.17.1-36.1.90-fix-1.17.x-library-loading'
 
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.14.0'
+    //implementation 'thedarkcolour:kotlinforforge:1.14.0'
+
+    implementation(':kotlinforforge-2.0.0')
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "16"
 }
 
 jar {
