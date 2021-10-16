@@ -1,14 +1,15 @@
 package example.examplemod
 
 import example.examplemod.block.ModBlocks
+import net.minecraft.client.Minecraft
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
-import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
+import thedarkcolour.kotlinforforge.forge.runForDist
 
 /**
  * Main mod class. Should be an `object` declaration annotated with `@Mod`.
@@ -23,7 +24,7 @@ object ExampleMod {
     const val ID: String = "examplemod"
 
     // the logger for our mod
-    val LOGGER: Logger = LogManager.getLogger()
+    val LOGGER: Logger = LogManager.getLogger(ID)
 
     init {
         LOGGER.log(Level.INFO, "Hello world!")
@@ -31,9 +32,17 @@ object ExampleMod {
         // Register the KDeferredRegister to the mod-specific event bus
         ModBlocks.REGISTRY.register(MOD_BUS)
 
-        // usage of the KotlinEventBus
-        MOD_BUS.addListener(::onClientSetup)
-        FORGE_BUS.addListener(::onServerAboutToStart)
+        val obj = runForDist(
+            clientTarget = {
+                MOD_BUS.addListener(::onClientSetup)
+                Minecraft.getInstance()
+            },
+            serverTarget = {
+                MOD_BUS.addListener(::onServerSetup)
+                "test"
+            })
+
+        println(obj)
     }
 
     /**
@@ -48,7 +57,7 @@ object ExampleMod {
     /**
      * Fired on the global Forge bus.
      */
-    private fun onServerAboutToStart(event: FMLServerAboutToStartEvent) {
+    private fun onServerSetup(event: FMLDedicatedServerSetupEvent) {
         LOGGER.log(Level.INFO, "Server starting...")
     }
 }
