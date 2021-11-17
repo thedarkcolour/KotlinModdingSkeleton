@@ -6,9 +6,9 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
         // Make sure this version matches the one included in Kotlin for Forge
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0'
         // OPTIONAL Gradle plugin for Kotlin Serialization
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.5.31"
+        classpath 'org.jetbrains.kotlin:kotlin-serialization:1.6.0'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -78,27 +78,14 @@ repositories {
         name = 'Kotlin for Forge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
     }
-
-    flatDir {
-        dir 'libs'
-    }
 }
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.86'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.97'
 
-    //implementation(':kotlinforforge-2.0.0-obf')
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:2.0.1'
-
-    //library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8"
-    //library group: "org.jetbrains.kotlin", name: "kotlin-reflect"
-    //library group: "org.jetbrains", name: "annotations"
-    //library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core"
-    //library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm"
-    //library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8"
-    //library group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json"
+    implementation 'thedarkcolour:kotlinforforge:2.1.0'
 }
 
 compileKotlin {
@@ -108,13 +95,13 @@ compileKotlin {
 jar {
     manifest {
         attributes([
-                "Specification-Title": "examplemod",
-                "Specification-Vendor": "examplemodsareus",
-                "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"examplemodsareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Specification-Title': "examplemod",
+                'Specification-Vendor': "examplemodsareus",
+                'Specification-Version': "1", // We are version 1 of ourselves
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor' :"examplemodsareus",
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
