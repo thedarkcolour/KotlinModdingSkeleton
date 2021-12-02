@@ -19,11 +19,11 @@ version = '1.0.0'
 group = 'example.examplemod'
 archivesBaseName = 'examplemod'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     // Change to your preferred mappings
-    mappings channel: 'official', version: '1.17.1'
+    mappings channel: 'official', version: '1.18'
     // Add your AccessTransformer
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -31,6 +31,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -43,6 +44,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
 
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -55,6 +57,7 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
             args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
@@ -80,16 +83,33 @@ repositories {
     }
 }
 
+configurations {
+    library
+    api.extendsFrom library
+}
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
+
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.97'
+    minecraft 'net.minecraftforge:forge:1.18-38.0.1'
 
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:2.1.0'
+    implementation 'thedarkcolour:kotlinforforge:3.0.0'
+
+    library (group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin.coreLibrariesVersion) {
+        exclude group: "org.jetbrains", module: "annotations"
+    }
+    library(group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin.coreLibrariesVersion) {
+        exclude group: "org.jetbrains", module: "annotations"
+    }
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "16"
+    kotlinOptions.jvmTarget = "17"
 }
 
 jar {

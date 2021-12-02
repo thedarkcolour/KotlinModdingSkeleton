@@ -19,7 +19,8 @@ import thedarkcolour.kotlinforforge.forge.runForDist
  * An example for blocks is in the `blocks` package of this mod.
  */
 @Mod(ExampleMod.ID)
-class ExampleMod {
+object ExampleMod {
+    const val ID = "examplemod"
 
     // the logger for our mod
     val LOGGER: Logger = LogManager.getLogger(ID)
@@ -57,10 +58,5 @@ class ExampleMod {
      */
     private fun onServerSetup(event: FMLDedicatedServerSetupEvent) {
         LOGGER.log(Level.INFO, "Server starting...")
-    }
-
-    companion object {
-        // the modid of our mod
-        const val ID: String = "examplemod"
     }
 }
