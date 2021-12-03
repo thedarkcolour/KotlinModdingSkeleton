@@ -15,6 +15,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
 
+apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.0.0.gradle'
+
 version = '1.0.0'
 group = 'example.examplemod'
 archivesBaseName = 'examplemod'
@@ -74,42 +76,9 @@ minecraft {
 // Include assets and data from data generators
 sourceSets.main.resources { srcDirs 'src/generated/resources/' }
 
-repositories {
-    mavenLocal()
-
-    maven {
-        name = 'Kotlin for Forge'
-        url = 'https://thedarkcolour.github.io/KotlinForForge/'
-    }
-}
-
-configurations {
-    library
-    api.extendsFrom library
-}
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 dependencies {
     // Use the latest version of Minecraft Forge
     minecraft 'net.minecraftforge:forge:1.18-38.0.1'
-
-    // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:3.0.0'
-
-    library (group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin.coreLibrariesVersion) {
-        exclude group: "org.jetbrains", module: "annotations"
-    }
-    library(group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin.coreLibrariesVersion) {
-        exclude group: "org.jetbrains", module: "annotations"
-    }
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "17"
 }
 
 jar {
