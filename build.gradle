@@ -15,7 +15,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
 
-apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.7.0.gradle'
+apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.7.1.gradle'
 
 version = '1.0.0'
 group = 'example.examplemod'
@@ -25,7 +25,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     // Change to your preferred mappings
-    mappings channel: 'official', version: '1.19'
+    mappings channel: 'official', version: '1.19.2'
     // Add your AccessTransformer
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -78,7 +78,7 @@ sourceSets.main.resources { srcDirs 'src/generated/resources/' }
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.19-41.0.98'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.0.2'
 }
 
 compileKotlin {
