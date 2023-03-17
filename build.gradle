@@ -15,7 +15,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println ("Java: ${System.getProperty('java.version')}, JVM: ${System.getProperty('java.vm.version')} (${System.getProperty('java.vendor')}), Arch: ${System.getProperty('os.arch')}")
 minecraft {
     // Change to your preferred mappings
-    mappings channel: 'official', version: '1.19.2'
+    mappings channel: 'official', version: '1.19.4'
     // Add your AccessTransformer
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -92,9 +92,9 @@ repositories {
 
 dependencies {
     // Use the latest version of Minecraft Forge
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.3'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.23'
 
-    implementation 'thedarkcolour:kotlinforforge:3.9.1'
+    implementation 'thedarkcolour:kotlinforforge:4.1.0'
 }
 
 compileKotlin {
