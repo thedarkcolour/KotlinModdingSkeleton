@@ -1,9 +1,9 @@
 plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
     // OPTIONAL Kotlin Serialization plugin
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
 }
 
 version = '1.0.0'
@@ -94,7 +94,7 @@ dependencies {
     // Use the latest version of Minecraft Forge
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.3'
 
-    implementation 'thedarkcolour:kotlinforforge:3.9.1'
+    implementation 'thedarkcolour:kotlinforforge:3.12.0'
 }
 
 compileKotlin {
