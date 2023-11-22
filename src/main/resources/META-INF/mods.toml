@@ -1,28 +1,34 @@
+# IMPORTANT: Do not worry about syntax errors popping up about ${mod_id}. These are template strings which are handled by Gradle.
+
 # Make sure this is set to "kotlinforforge"
 modLoader="kotlinforforge"
 # Make sure this is set to the appropriate version range
-loaderVersion="[3,)" # Require at least 3.x
+loaderVersion="${loader_version_range}"
 # License is REQUIRED after 1.16
-license='LGPL'
+license='${mod_license}'
 
 [[mods]]
-modId="examplemod"
-version="${file.jarVersion}"
-displayName="ExampleMod"
-credits="The ExampleMod dev team"
-authors="ExampleModAuthor"
-description='''
-Example mod that uses Kotlin for Forge.
-'''
-[[dependencies.examplemod]]
-    modId="forge"
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+credits="Thanks to thedarkcolour and all the contributors for making Kotlin for Forge"
+authors="${mod_authors}"
+description='''${mod_description}'''
+[[dependencies.${mod_id}]]
+    modId="neoforge"
     mandatory=true
-    versionRange="[41,)"
+    versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.examplemod]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+# Features are specific properties of the game environment, that you may want to declare you require. This example declares
+# that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
+# stop your mod loading on the server for example.
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"
