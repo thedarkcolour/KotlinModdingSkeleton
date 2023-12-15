@@ -2,8 +2,10 @@ package example.examplemod
 
 import example.examplemod.block.ModBlocks
 import net.minecraft.client.Minecraft
+import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
@@ -19,6 +21,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
  * An example for blocks is in the `blocks` package of this mod.
  */
 @Mod(ExampleMod.ID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 object ExampleMod {
     const val ID = "examplemod"
 
@@ -58,5 +61,10 @@ object ExampleMod {
      */
     private fun onServerSetup(event: FMLDedicatedServerSetupEvent) {
         LOGGER.log(Level.INFO, "Server starting...")
+    }
+
+    @SubscribeEvent
+    fun onCommonSetup(event: FMLCommonSetupEvent) {
+        LOGGER.log(Level.INFO, "Hello! This is working!")
     }
 }
