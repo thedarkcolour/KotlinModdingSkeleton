@@ -4,12 +4,12 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.115'
+    id 'net.neoforged.moddev' version '2.0.137'
 
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '2.2.20'
+    id 'org.jetbrains.kotlin.jvm' version '2.3.0'
     // OPTIONAL Kotlin Serialization plugin
-    //id 'org.jetbrains.kotlin.plugin.serialization' version '2.2.20'
+    //id 'org.jetbrains.kotlin.plugin.serialization' version '2.3.0'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -26,9 +26,9 @@ group = mod_group_id
 
 base.archivesName = mod_id
 
-// Mojang ships Java 21 to end users in 1.21.10, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-compileKotlin.compilerOptions.jvmTarget = JvmTarget.JVM_21
+// Mojang ships Java 25 to end users in 26.1, so mods should target Java 25.
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+compileKotlin.compilerOptions.jvmTarget = JvmTarget.JVM_25
 
 neoForge {
     version = project.neo_version
@@ -124,7 +124,7 @@ repositories {
 
 dependencies {
     // Must use the '-neoforge' version on NeoForge. If on regular Forge, omit the '-neoforge'
-    implementation 'thedarkcolour:kotlinforforge-neoforge:6.0.0'
+    implementation 'thedarkcolour:kotlinforforge-neoforge:6.1.0a'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -38,7 +38,8 @@ object ExampleMod {
         val obj = runForDist(
             clientTarget = {
                 MOD_BUS.addListener(::onClientSetup)
-                Minecraft.getInstance()
+                // Mods now load before Minecraft is initialized
+                //Minecraft.getInstance()
             },
             serverTarget = {
                 MOD_BUS.addListener(::onServerSetup)
