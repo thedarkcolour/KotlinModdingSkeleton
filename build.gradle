@@ -1,95 +1,61 @@
 plugins {
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.neoforged.moddev.legacyforge' version '2.0.80'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.3'
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
+    id 'org.jetbrains.kotlin.jvm' version '2.4.21'
     // OPTIONAL Kotlin Serialization plugin
     //id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
 }
 
 version = mod_version
 group = mod_group_id
-
-base {
-    archivesName = mod_id
-}
+base.archivesName = mod_id
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-println("Java: ${System.getProperty('java.version')}, JVM: ${System.getProperty('java.vm.version')} (${System.getProperty('java.vendor')}), Arch: ${System.getProperty('os.arch')}")
-minecraft {
-    // Change to your preferred mappings
-    mappings channel: mapping_channel, version: mapping_version
+legacyForge {
+    version = "$minecraft_version-$forge_version"
+
     // Add your AccessTransformer
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // accessTransformers = files('src/main/resources/META-INF/accesstransformer.cfg')
+    // Set to false because Forge has broken access transformers
+    //validateAccessTransformers = true
+
+    // Add Parchment parameter mappings
+    parchment {
+        mappingsVersion = project.mapping_version
+        minecraftVersion = project.minecraft_version
+    }
 
     runs {
-        // REQUIRED for processResources to work in dev
-        copyIdeResources = true
+        configureEach {
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
 
         client {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "$mod_id" {
-                    source sourceSets.main
-                }
-            }
+            client()
         }
 
         server {
-            workingDirectory project.file('run/server')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "$mod_id" {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run/server')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', mod_id
-
-            mods {
-                "$mod_id" {
-                    source sourceSets.main
-                }
-            }
+            server()
+            gameDirectory.set(project.layout.projectDirectory.dir('run/server'))
+            programArgument '--nogui'
         }
 
         data {
-            workingDirectory project.file('run')
+            data()
+            programArguments.addAll('--mod', mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources').absolutePath)
+        }
+    }
 
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
-
-            mods {
-                "$mod_id" {
-                    source sourceSets.main
-                }
-            }
+    mods {
+        "$mod_id" {
+            sourceSet sourceSets.main
         }
     }
 }
-
-// Include assets and data from data generators
-sourceSets.main.resources { srcDirs 'src/generated/resources/' }
 
 repositories {
     maven {
@@ -100,47 +66,41 @@ repositories {
 }
 
 dependencies {
-    // Use the latest version of Minecraft Forge
-    minecraft "net.minecraftforge:forge:$minecraft_version-$forge_version"
-
     implementation "thedarkcolour:kotlinforforge:$kff_version"
 }
 
-// This block of code expands all declared replace properties in the specified resource targets.
-// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
-// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
-def replaceProperties = [
-        minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-        forge_version: forge_version, forge_version_range: forge_version_range,
-        mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-        mod_authors: mod_authors, mod_description: mod_description
-]
-processResources {
-    inputs.properties replaceProperties
-    replaceProperties.put 'project', project
+// Include assets and data from data generators
+sourceSets.main.resources { srcDirs 'src/generated/resources/' }
 
-    filesMatching(resourceTargets) {
-        expand replaceProperties
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            'mod_license': project.mod_license,
+            'mod_id': project.mod_id,
+            'mod_version': project.version,
+            'mod_name': project.mod_name,
+            'mod_authors': project.mod_authors,
+            'mod_description': project.mod_description,
+            'forge_version_range': project.forge_version_range,
+            'minecraft_version_range': project.minecraft_version_range,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+
+idea.project.settings {
+    taskTriggers {
+        afterSync generateModMetadata
     }
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "17"
-}
-
-jar {
-    manifest {
-        attributes([
-                'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : "1", // We are version 1 of ourselves
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
     }
 }
 
@@ -148,8 +108,11 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+
 // The below is only required if using 'maven-publish' and you want to publish to maven or use JitPack
-jar.finalizedBy('reobfJar')
 publishing {
     publications {
         mavenJava(MavenPublication) {
